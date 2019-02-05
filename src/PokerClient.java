@@ -3,35 +3,25 @@ import java.util.List;
 
 public class PokerClient {
 
-    public List<Card> myCards = new ArrayList<>();
+    private List<Card> myCards = new ArrayList<>();
 
     public PokerClient(String p1, String p2, String p3, String p4, String p5) {
-        myCards.add(new Card(p1.toUpperCase()));
-        myCards.add(new Card(p2.toUpperCase()));
-        myCards.add(new Card(p3.toUpperCase()));
-        myCards.add(new Card(p4.toUpperCase()));
-        myCards.add(new Card(p5.toUpperCase()));
+        fillUpHand(p1, p2, p3, p4, p5, myCards);
     }
 
     public boolean highestCardIsMine(String p1, String p2, String p3, String p4, String p5) {
         Card hc = new Card("s2");
-        List<Card> othersCard = new ArrayList<>();
+        List<Card> othersCards = new ArrayList<>();
         List<Card> myCards = this.myCards;
-        othersCard.add(new Card(p1.toUpperCase()));
-        othersCard.add(new Card(p2.toUpperCase()));
-        othersCard.add(new Card(p3.toUpperCase()));
-        othersCard.add(new Card(p4.toUpperCase()));
-        othersCard.add(new Card(p5.toUpperCase()));
+        fillUpHand(p1, p2, p3, p4, p5, othersCards);
 
 
-        for (int i = 0; i < othersCard.size(); i++) {
-            Card mc = myCards.get(i);
-            for (int j = 0; j < othersCard.size(); j++) {
-                Card oc = othersCard.get(j);
-                if (oc.getValue() >= mc.getValue()) {
-                    if (oc.getValue() >= hc.getValue()) {
+        for (Card myCard : myCards) {
+            for (Card othersCard : othersCards) {
+                Card mc = myCard;
+                Card oc = othersCard;
+                if (oc.getValue() >= mc.getValue() && oc.getValue() >= hc.getValue()) {
                         hc = oc;
-                    }
                 } else {
                     if (mc.getValue() > hc.getValue()) {
                         hc = mc;
@@ -39,8 +29,15 @@ public class PokerClient {
                 }
             }
         }
-
         return myCards.contains(hc);
+    }
+
+    private void fillUpHand(String p1, String p2, String p3, String p4, String p5, List<Card> othersCards) {
+        othersCards.add(new Card(p1.toUpperCase()));
+        othersCards.add(new Card(p2.toUpperCase()));
+        othersCards.add(new Card(p3.toUpperCase()));
+        othersCards.add(new Card(p4.toUpperCase()));
+        othersCards.add(new Card(p5.toUpperCase()));
     }
 
 }
